@@ -1,5 +1,28 @@
+# OS X
+.DS_Store*
+Icon?
+.env
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
+
+# npm
 node_modules
-.vscode
-npm-debug.log
-.serverless
-variables.env
+package-lock.json
+*.log
+*.gz
+
+
+# Coveralls
+coverage
+
+# Benchmarking
+benchmarks/graphs
