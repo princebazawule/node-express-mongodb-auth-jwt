@@ -1,6 +1,6 @@
 module.exports = (app) => {
     const users = require("./user.controller")
-    const VerifyToken = require('../auth/verifyToken');
+    const VerifyToken = require('../auth/verifyToken')
     
     const router = require("express").Router()
   
