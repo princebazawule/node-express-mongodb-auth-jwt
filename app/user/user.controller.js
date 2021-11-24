@@ -3,6 +3,14 @@
 const db = require("../models")
 const User = db.User
 
+// setup pagination
+const getPagination = (page, size) => {
+    const limit = size ? +size : 10
+    const offset = page ? page * limit : 0
+  
+    return { limit, offset }
+}
+
 exports.createOne = (req, res) => {
     User.create({
         name : req.body.name,
@@ -16,10 +24,27 @@ exports.createOne = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-    User.find({}, function (err, users) {
-        if (err) return res.status(500).send("There was a problem finding the users.")
-        res.status(200).send(users)
-    })
+    const { page, size, name, _order } = req.query
+    let condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {}
+    const { limit, offset } = getPagination(page, size)
+    
+    User.paginate(condition, { offset, limit, sort:{ "createdAt": _order} })
+    .then((data) => {
+        res.send(
+          {
+            totalItems: data.totalDocs,
+            users: data.docs,
+            totalPages: data.totalPages,
+            currentPage: data.page - 1,
+          }
+        )
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "There was a problem finding users.",
+        })
+      })
 }
 
 exports.findOne = (req, res) => {

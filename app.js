@@ -39,6 +39,7 @@ db.mongoose
 // routes
 require('./app/user/user.routes')(app)
 
+// middleware
 const AuthController = require('./app/auth/AuthController')
 app.use('/api/auth', AuthController)
 
